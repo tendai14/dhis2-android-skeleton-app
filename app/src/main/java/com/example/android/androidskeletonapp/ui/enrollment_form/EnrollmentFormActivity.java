@@ -57,6 +57,8 @@ public class EnrollmentFormActivity extends AppCompatActivity {
 
     private void createAttributeValue(String attributeUid, String value) throws D2Error {
         // TODO Create attribute value
+
+
     }
 
     @Override
