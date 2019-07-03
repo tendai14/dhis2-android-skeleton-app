@@ -1,11 +1,13 @@
 package com.example.android.androidskeletonapp.ui.enrollment_form;
 
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android.androidskeletonapp.R;
 import com.example.android.androidskeletonapp.data.service.forms.FormField;
 
 import org.hisp.dhis.android.core.common.ValueType;
@@ -16,9 +18,11 @@ import java.util.List;
 public class FormAdapter extends RecyclerView.Adapter<FieldHolder> {
 
     private List<FormField> fields;
+    OnValueSaved valueSavedListener;
 
     public FormAdapter(OnValueSaved valueSavedListener) {
         this.fields = new ArrayList<>();
+        this.valueSavedListener = valueSavedListener;
         setHasStableIds(true);
     }
 
@@ -65,6 +69,22 @@ public class FormAdapter extends RecyclerView.Adapter<FieldHolder> {
     @Override
     public FieldHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // TODO Create view holder depending on the field value type
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        switch (ValueType.values()[viewType]){
+
+            case TEXT:
+                return new TextFieldHolder(inflater.inflate(R.layout.item_field,parent,false),valueSavedListener);
+
+            case DATE:
+                return new DateFieldHolder(inflater.inflate(R.layout.item_date_field,parent,false)
+                ,valueSavedListener);
+
+            case LONG_TEXT:
+                return new TextFieldHolder(inflater.inflate(R.layout.item_field,parent,false),valueSavedListener);
+            case BOOLEAN:
+                return new TextFieldHolder(inflater.inflate(R.layout.item_boolean_field,parent,false),valueSavedListener);
+        }
+
         return null;
     }
 
