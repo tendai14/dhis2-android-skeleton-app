@@ -42,7 +42,7 @@ public class TrackedEntityInstancesActivity extends ListActivity {
         compositeDisposable = new CompositeDisposable();
 
         // TODO Uncomment this method to trigger trackedEntitySearch
-        // observeTrackedEntityInstances();
+         observeTrackedEntityInstances();
     }
 
     private void observeTrackedEntityInstances() {
@@ -58,7 +58,7 @@ public class TrackedEntityInstancesActivity extends ListActivity {
 
     private TrackedEntityInstanceCollectionRepository getTeiRepository() {
         // TODO Get TrackedEntityInstanceRepository to show trackedEntityInstances with Attributes
-        TrackedEntityInstanceCollectionRepository teiRepository = null;
+        TrackedEntityInstanceCollectionRepository teiRepository = Sdk.d2().trackedEntityModule().trackedEntityInstances.withTrackedEntityAttributeValues();
 
         if (!isEmpty(selectedProgram)) {
             // TODO If program is selected, filter by program uid
