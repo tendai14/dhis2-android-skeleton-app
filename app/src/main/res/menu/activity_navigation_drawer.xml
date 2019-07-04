@@ -19,6 +19,11 @@
 
         <!--TODO Add item to launch d2 errors activity-->
 
+        <item
+            android:id="@+id/navErrorsLaunch"
+            android:icon="@drawable/ic_error_outline_black_24dp"
+            android:title="@string/title_activity_tracked_entity_search" />
+
     </group>
 
     <item android:title="@string/data_management">
