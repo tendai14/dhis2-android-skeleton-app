@@ -5,18 +5,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.androidskeletonapp.R;
+import com.example.android.androidskeletonapp.data.Sdk;
 import com.example.android.androidskeletonapp.data.service.DateFormatHelper;
 import com.example.android.androidskeletonapp.ui.base.DiffByIdItemCallback;
 import com.example.android.androidskeletonapp.ui.base.ListItemWithSyncHolder;
+import com.example.android.androidskeletonapp.ui.tracker_import_conflicts.TrackerImportConflictsAdapter;
 
+import org.hisp.dhis.android.core.imports.TrackerImportConflict;
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityAttributeValue;
 import org.hisp.dhis.android.core.trackedentity.TrackedEntityInstance;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.example.android.androidskeletonapp.data.service.AttributeHelper.attributePatientIdUid;
 import static com.example.android.androidskeletonapp.data.service.AttributeHelper.attributePatientNameUid;
@@ -26,6 +31,10 @@ import static com.example.android.androidskeletonapp.data.service.StyleBinderHel
 import static com.example.android.androidskeletonapp.data.service.StyleBinderHelper.setState;
 
 public class TrackedEntityInstanceAdapter extends PagedListAdapter<TrackedEntityInstance, ListItemWithSyncHolder> {
+
+    TrackerImportConflictsAdapter adapter = new TrackerImportConflictsAdapter();
+
+
 
     public TrackedEntityInstanceAdapter() {
         super(new DiffByIdItemCallback<>());
@@ -46,11 +55,17 @@ public class TrackedEntityInstanceAdapter extends PagedListAdapter<TrackedEntity
         holder.title.setText(valueAt(values, attributePatientNameUid()));
         holder.subtitle1.setText(valueAt(values, attributePatientIdUid()));
         holder.subtitle2.setText(setSubtitle2(values));
-        holder.rightText.setText(DateFormatHelper.formatDate(trackedEntityInstance.created()));
+//        holder.rightText.setText(DateFormatHelper.formatDate(trackedEntityInstance.created()));
         holder.icon.setImageResource(R.drawable.ic_person_black_24dp);
         setBackgroundColor(R.color.colorAccentDark, holder.icon);
         setState(trackedEntityInstance.state(), holder.syncIcon);
         // TODO bind tracker import conflicts
+
+        List<TrackerImportConflict> conflicts =
+        Sdk.d2().importModule().trackerImportConflicts.byTrackedEntityInstanceUid().eq(trackedEntityInstance.uid()).get();
+        holder.recyclerView.setAdapter(adapter);
+
+        adapter.setConflicts(conflicts);
     }
 
     private String valueAt(List<TrackedEntityAttributeValue> values, String attributeUid) {
